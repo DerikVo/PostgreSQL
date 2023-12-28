@@ -33,13 +33,13 @@ This table is for the 'employees' csv fle
 */
 CREATE TABLE employees
 (
-  employee_id bigint
-, first_name varchar(255)
-, manager_id bigint
-, address varchar(255)
-, city varchar(255)
-, state_abv varchar(2)
-, zip_code varchar(20)
-, phone_number varchar(20) 
+  	employee_id bigint
+	, first_name varchar(255)
+	, manager_id bigint
+	, address varchar(255)
+	, city varchar(255)
+	, state_abv varchar(2)
+	, zip_code varchar(20)
+	, phone_number varchar(20) 
 )
 ;
