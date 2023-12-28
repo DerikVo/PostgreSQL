@@ -14,4 +14,4 @@ FROM
 	customers
 Order by
 	last_name --order by last name so we can manually count as well; last names more common than first names in this dataset
-,first_name --After last name, output will then be ordered by first name; can manually count both names to verify output
+	,first_name --After last name, output will then be ordered by first name; can manually count both names to verify output
