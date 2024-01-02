@@ -43,3 +43,17 @@ CREATE TABLE employees
 	, phone_number varchar(20) 
 )
 ;
+
+/*
+This table is for the "Transactions" csv file
+*/
+create table transactions
+(
+transaction_date date,
+customer_id bigint,
+transaction_id bigint,
+quantity integer,
+sku character varying(255),
+unit_price numeric(10,2)
+)
+;
