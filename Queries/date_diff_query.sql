@@ -22,7 +22,7 @@ SELECT
 
 	--comparison for case statement logic, we assume some month differences to be a year off
 	,(EXTRACT(YEAR FROM AGE(CURRENT_DATE, transaction_date)) * 12)
-    	+EXTRACT(MONTH FROM AGE(CURRENT_DATE, transaction_date)) AS months_difference_extract
+    		+EXTRACT(MONTH FROM AGE(CURRENT_DATE, transaction_date)) AS months_difference_extract
 FROM
     transactions
 )
