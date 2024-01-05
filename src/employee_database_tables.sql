@@ -1,5 +1,5 @@
 /*
-This table is for the 'customers' csv fle
+This table is for the 'customers' csv file in the employee_database_tables folder
 */
 
 CREATE TABLE customers
@@ -20,7 +20,7 @@ CREATE TABLE customers
 ;
 
 /*
-This table is for the 'states' csv fle
+This table is for the 'states' csv file in the employee_database_tables folder
 */
 
 create table states(
@@ -29,7 +29,7 @@ create table states(
 )
 ;
 /*
-This table is for the 'employees' csv fle
+This table is for the 'employees' csv file in the employee_database_tables folder
 */
 CREATE TABLE employees
 (
@@ -45,7 +45,7 @@ CREATE TABLE employees
 ;
 
 /*
-This table is for the "Transactions" csv file
+This table is for the "Transactions" csv file in the employee_database_tables folder
 */
 create table transactions
 (
