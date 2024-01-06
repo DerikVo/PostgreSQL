@@ -18,3 +18,10 @@ UPDATE foods
 		storage_type = INITCAP(storage_type)
 		,item_name = INITCAP(item_name)
 ;
+
+--Update null values for food storage, so it makes sense to the end user
+UPDATE foods
+	SET storage_type = 'Unknown'
+		WHERE
+			storage_type IS NULL
+
