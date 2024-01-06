@@ -1,3 +1,6 @@
+/*
+This is for cleaning the foods database for homework 1
+*/
 --Simple excercise to clean data; first we find whats missing or wrong
 SELECT
 	*
