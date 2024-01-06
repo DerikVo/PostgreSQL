@@ -113,3 +113,79 @@ SELECT
 
 FROM
 	foods
+	
+--Date functions; count days since a product was last updated
+SELECT
+	 food_id
+	,Item_name
+	,storage_type
+	,package_size
+	,package_size_uom as package_size_unit_of_measurement
+	,brand_name
+	,package_price
+	 ,(price_last_updated_ts at time zone 'PST')::date as "Price_last_updated"
+	,current_date
+	--Delta; days difference
+	,(current_date - (price_last_updated_ts at time zone 'PST')::date)::int as days_since_last_update
+FROM
+	foods
+WHERE -- Can create a subquery in the from statement or create a cte as well
+	CAST(current_date - (price_last_updated_ts at time zone 'PST')::date as int) > 30 -- Can call days_since_last_update if you kept it as an int
+;
+
+--combining the dinks and foods table; creates source columns and adds null columns to provide context of source table
+
+SELECT
+	food_id
+	,NULL AS drink_id
+	,'Foods Table' as source_table
+	,item_name
+	,storage_type
+	,package_size
+	,package_size_uom as package_size_unit_of_measurement
+	,brand_name
+	,package_price
+	,price_last_updated_ts AT time zone 'PST'
+FROM
+	foods
+UNION ALL
+
+SELECT
+	NULL AS food_id
+	,drink_id
+	,'Drinks Table' as source_table
+	,item_name
+	,storage_type
+	,package_size
+	,package_size_uom as package_size_unit_of_measurement
+	,brand_name
+	,package_price
+	,price_last_updated_ts AT time zone 'PST'
+FROM
+	Drinks d
+	
+	
+--Query for food inventory. Again practicing with CTE, orginal answer key used 2 nested sub-queries
+with latest_date_cte as (
+						SELECT
+							food_inventory_id
+							,food_item_id
+							,quantity
+							,inventory_dt
+						FROM
+							food_inventories
+						WHERE
+							inventory_dt = ( SELECT -- query to get the newest updated inventory date
+												MAX(inventory_dt)
+											FROM
+												food_inventories )
+						)
+SELECT
+	*
+FROM
+	foods f
+	LEFT OUTER JOIN 
+	latest_date_Cte l on f.food_id = l.food_item_id
+ORDER BY
+	food_id 
+
