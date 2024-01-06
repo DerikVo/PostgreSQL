@@ -17,7 +17,10 @@ UPDATE foods
 	SET 
 		storage_type = INITCAP(storage_type)
 		,item_name = INITCAP(item_name)
+		,brand_name = INITCAP(brand_name)
 ;
+
+--Proper case
 
 --Update null values for food storage, so it makes sense to the end user
 UPDATE foods
