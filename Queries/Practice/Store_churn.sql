@@ -19,7 +19,7 @@ create temp table trans_w_attributes as (
 	*/
 	  -- transactions in last 90d
 	  , case when t.trans_dt >= (
-									select
+									select --I believe this query was Brandon making an assuming of using the last transaction date as a mock date the report was created, so ill pretned this is the current date
 										max(trans_dt) today_date
 									from
 										transactions t
