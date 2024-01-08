@@ -19,7 +19,7 @@ create temp table trans_w_attributes as (
 	*/
 	  -- transactions in last 90d
 	  , case when t.trans_dt >= (
-									select --I believe this query was Brandon making an assuming of using the last transaction date as a mock date the report was created, so ill pretned this is the current date
+									select --I believe this query was Brandon using the last transaction date as a mock date the report was created on, so i'll pretned this is the current date
 										max(trans_dt) today_date
 									from
 										transactions t
@@ -106,7 +106,7 @@ SELECT
 	p.customer_id
 	,c.first_name
 	,p.transaction_id
-	,p.trans_dt::date --can get a date diff to find number of days from last purchase in a production setting
+	,p.trans_dt::date -- This is the last transaction of a customer, so I can use a date diff to find number of days since a customers last purchase in a production setting instead of using it as a pseudo date like earlier.
 	,c.number_of_transactions
 	,p.customer_status
 FROM
