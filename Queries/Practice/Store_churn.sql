@@ -6,6 +6,17 @@ so we can know who to target.
 
 */
 
+--data param table -- create a table for the date, so we can update it as needed; can also hardcode any date instead of pulling max_date e.g. 2022-12-31
+create temp table pseudo_date as(
+select
+	max(trans_dt) today_date
+from
+	transactions
+
+)
+;
+
+
 -- temp table excercise
 create temp table trans_w_attributes as (
 	select
@@ -19,10 +30,10 @@ create temp table trans_w_attributes as (
 	*/
 	  -- transactions in last 90d
 	  , case when t.trans_dt >= (
-									select --I believe this query was Brandon using the last transaction date as a mock date the report was created on, so i'll pretned this is the current date
-										max(trans_dt) today_date
+									select
+										today_date
 									from
-										transactions t
+										pseudo_date
 								) - interval '90 days'
 					then 1 
 					else 0 
@@ -31,9 +42,9 @@ create temp table trans_w_attributes as (
 		-- trans in last 60d
 	  , case when t.trans_dt >= (
 									select
-										max(trans_dt) today_date
+										today_date
 									from
-										transactions t
+										pseudo_date
 								) - interval '60 days'
 					then 1 
 					else 0 
@@ -42,9 +53,9 @@ create temp table trans_w_attributes as (
 		-- trans in last 30d
 	  , case when t.trans_dt >= (
 									select
-										max(trans_dt) today_date
+										today_date
 									from
-										transactions t
+										pseudo_date
 								) - interval '30 days'
 					then 1 
 					else 0 
@@ -71,10 +82,10 @@ select
   , case
   		-- if first purchase within last 30 days
   		when t.min_cust_trans_dt >= (
-										select
-											max(trans_dt) today_date
-										from
-											transactions t
+									select
+										today_date
+									from
+										pseudo_date
 									) - interval '30 days'
 				then 'new'
 			
@@ -104,9 +115,10 @@ where
 --final query to find dormant accounts that made a purchase in the last 90 days
 SELECT
 	p.customer_id
-	,c.first_name
+	,c.first_name --Contains name so we can send an email in production
 	,p.transaction_id
-	,p.trans_dt::date -- This is the last transaction of a customer, so I can use a date diff to find number of days since a customers last purchase in a production setting instead of using it as a pseudo date like earlier.
+	,p.trans_dt::date --can get a date diff to find number of days from last purchase in a production setting
+	,CAST('2022-10-31' as date) - p.trans_dt::date as "days_since_last_purchase" --hardcoded date for purposes of activity, but should be a subquery or subtracting from current_date in production
 	,c.number_of_transactions
 	,p.customer_status
 FROM
@@ -115,12 +127,7 @@ FROM
 	customers as c on p.customer_id = c.customer_id
 WHERE
 		1=1
-	and customer_status = 'churned' --use keywords so it's easier to filter for endusers 
-
-	
-
-
-
-
-
-
+	and customer_status = 'churned' --use keywords so it's easier to filter for endusers
+ORDER BY
+	days_since_last_purchase DESC
+	,number_of_transactions DESC --find customers with more transactions; makes an assumption they're more likly to buy again with the right deal
