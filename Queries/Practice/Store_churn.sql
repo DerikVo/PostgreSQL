@@ -118,7 +118,7 @@ SELECT
 	,c.first_name --Contains name so we can send an email in production
 	,p.transaction_id
 	,p.trans_dt::date --can get a date diff to find number of days from last purchase in a production setting
-	,CAST('2022-10-31' as date) - p.trans_dt::date as "days_since_last_purchase" --hardcoded date for purposes of activity, but should be a subquery or subtracting from current_date in production
+	,CAST('2022-10-31' as date) - p.trans_dt::date as "days_since_last_purchase" --hardcoded date for purposes of activity, but should be subtracting from current_date in production or a sub query of a parameter table for this example.
 	,c.number_of_transactions
 	,p.customer_status
 FROM
